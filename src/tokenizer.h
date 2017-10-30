@@ -24,12 +24,10 @@ using namespace std;
 #define DELIMIT_TYPE  6
 #define ERROR_TYPE    7
 
-#define STRING_SIZE   5
-
 //list of keyword and boundary
 const string keywdStr[6] = { "int", "main", "void", "if", "else", "char" };
-const string boundStr[16] = { ">=", "<=", "==", "=", ">", "<", "+", "-", "*", "/",
-                              "{", "}", ",", ";", "(", ")"};
+const string delimitStr[18] = { ">=", "<=", "==", "=", ">", "<", "+", "-", "*", "/",
+                              "{", "}", ",", ";", "(", ")", "[", "]"};
 
 //type of char & string
 typedef int Type;
@@ -58,7 +56,7 @@ public:
 private:
 	ifstream srcCode;
 
-	//current character and next character
+	//current character
 	char crtChar;
 	//whether next character have been read
 	bool nextReadFlag;

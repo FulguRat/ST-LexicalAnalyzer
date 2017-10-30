@@ -66,6 +66,7 @@ void Tokenizer::findToken(void)
 
 		switch (judgeCType(crtChar))
 		{
+		//keyword or identifier
 		case LETTER_TYPE:
 			crtString += crtChar;
 			cout << crtChar;
@@ -105,6 +106,7 @@ void Tokenizer::findToken(void)
 			stringType = NONE_TYPE;
 			break;
 
+		//const
 		case NUMBER_TYPE:
 			while (judgeCType(crtChar) == NUMBER_TYPE)
 			{
@@ -114,6 +116,51 @@ void Tokenizer::findToken(void)
 			cout << "   const" << endl;
 			break;
 
+		//string
+		case D_QUOTE_TYPE:
+			_read_next(crtChar);
+			while (judgeCType(crtChar) != D_QUOTE_TYPE)
+			{
+				cout << crtChar;
+				_read_next(crtChar);
+			}
+			_read_next(crtChar);
+			cout << "   string" << endl;
+			break;
+
+		//character
+		case F_QUOTE_TYPE:
+			_read_next(crtChar);
+			cout << crtChar;
+			_read_next(crtChar);
+			_read_next(crtChar);
+			cout << "   character" << endl;
+			break;
+
+		//delimiter
+		case OTHER_TYPE:
+			if (crtChar == '>' || crtChar == '<' || crtChar == '=')
+			{
+				crtString += crtChar;
+				cout << crtChar;
+				_read_next(crtChar);
+			}
+			if (judgeCType(crtChar) == OTHER_TYPE)
+			{
+				crtString += crtChar;
+				cout << crtChar;
+				_read_next(crtChar);
+			}
+			for (unsigned int i = 0; i < 18; i++)
+			{
+				if (crtString == delimitStr[i])
+				{
+					stringType = DELIMIT_TYPE;
+					cout << "   delimiter" << i << endl;
+					break;
+				}
+			}
+			break;
 		default:
 			break;
 		}
