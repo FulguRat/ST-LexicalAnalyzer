@@ -61,6 +61,9 @@ void Tokenizer::findToken(void)
 	//find one string in a while()
 	while (!srcCode.eof())
 	{
+		crtToken.tokenType = NONE_TYPE;
+		crtToken.tokenValue = -1;
+
 		crtString.clear();
 		_read_crt(crtChar);
 
@@ -69,7 +72,7 @@ void Tokenizer::findToken(void)
 		//keyword or identifier
 		case LETTER_TYPE:
 			crtString += crtChar;
-			cout << crtChar;
+			//cout << crtChar;
 			_read_next(crtChar);
 
 			while (judgeCType(crtChar) != BLANK_TYPE)
@@ -78,7 +81,7 @@ void Tokenizer::findToken(void)
 					judgeCType(crtChar) == NUMBER_TYPE)
 				{
 					crtString += crtChar;
-					cout << crtChar;
+					//cout << crtChar;
 					_read_next(crtChar);
 					
 					continue;
@@ -92,28 +95,31 @@ void Tokenizer::findToken(void)
 			{
 				if (crtString == keywdStr[i])
 				{
-					stringType = KEYWD_TYPE;
-					cout << "   keyword" << i << endl;
+					crtToken.tokenType = KEYWD_TYPE;
+					crtToken.tokenValue = 4 + i;
+					//cout << "   keyword" << i << endl;
 					break;
 				}
 			}
-			if (stringType != KEYWD_TYPE)
+			if (crtToken.tokenType != KEYWD_TYPE)
 			{
-				stringType = IDENT_TYPE;
-				cout << "   identifier" << endl;
+				crtToken.tokenType = IDENT_TYPE;
+				crtToken.tokenValue = 0;
+				//cout << "   identifier" << endl;
 			}
 
-			stringType = NONE_TYPE;
 			break;
 
 		//const
 		case NUMBER_TYPE:
 			while (judgeCType(crtChar) == NUMBER_TYPE)
 			{
-				cout << crtChar;
+				//cout << crtChar;
 				_read_next(crtChar);
 			}
-			cout << "   const" << endl;
+			crtToken.tokenType = CONST_TYPE;
+			crtToken.tokenValue = 3;
+			//cout << "   const" << endl;
 			break;
 
 		//string
@@ -121,20 +127,24 @@ void Tokenizer::findToken(void)
 			_read_next(crtChar);
 			while (judgeCType(crtChar) != D_QUOTE_TYPE)
 			{
-				cout << crtChar;
+				//cout << crtChar;
 				_read_next(crtChar);
 			}
 			_read_next(crtChar);
-			cout << "   string" << endl;
+			crtToken.tokenType = STRING_TYPE;
+			crtToken.tokenValue = 2;
+			//cout << "   string" << endl;
 			break;
 
 		//character
 		case F_QUOTE_TYPE:
 			_read_next(crtChar);
-			cout << crtChar;
+			//cout << crtChar;
 			_read_next(crtChar);
 			_read_next(crtChar);
-			cout << "   character" << endl;
+			crtToken.tokenType = CHAR_TYPE;
+			crtToken.tokenValue = 1;
+			//cout << "   character" << endl;
 			break;
 
 		//delimiter
@@ -142,27 +152,35 @@ void Tokenizer::findToken(void)
 			if (crtChar == '>' || crtChar == '<' || crtChar == '=')
 			{
 				crtString += crtChar;
-				cout << crtChar;
+				//cout << crtChar;
 				_read_next(crtChar);
 			}
 			if (judgeCType(crtChar) == OTHER_TYPE)
 			{
 				crtString += crtChar;
-				cout << crtChar;
+				//cout << crtChar;
 				_read_next(crtChar);
 			}
 			for (unsigned int i = 0; i < 18; i++)
 			{
 				if (crtString == delimitStr[i])
 				{
-					stringType = DELIMIT_TYPE;
-					cout << "   delimiter" << i << endl;
+					crtToken.tokenType = DELIMIT_TYPE;
+					crtToken.tokenValue = 10 + i;
+					//cout << "   delimiter" << i << endl;
 					break;
 				}
 			}
 			break;
 		default:
 			break;
+		}
+
+		if (!crtString.empty())
+		{
+			cout << setw(5) << setfill(' ') << setiosflags(ios::left) << crtString;
+			cout << setw(5) << setfill(' ') << setiosflags(ios::left) << crtToken.tokenType;
+			cout << setw(2) << setfill('0') << crtToken.tokenValue << endl;
 		}
 	}
 

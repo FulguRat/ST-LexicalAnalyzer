@@ -2,8 +2,10 @@
 #define _TOKENIZER_H
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -17,9 +19,9 @@ using namespace std;
 #define OTHER_TYPE    6
 
 #define IDENT_TYPE    1
-#define CHAR_TYPE     2
+#define CONST_TYPE    2
 #define STRING_TYPE   3
-#define CONST_TYPE    4
+#define CHAR_TYPE     4
 #define KEYWD_TYPE    5
 #define DELIMIT_TYPE  6
 #define ERROR_TYPE    7
@@ -63,8 +65,7 @@ private:
 
 	string crtString;
 
-	SType stringType = NONE_TYPE;
-
 	token crtToken;
+	vector<token> tokenList;
 };
 #endif //_TOKENIZER_H
