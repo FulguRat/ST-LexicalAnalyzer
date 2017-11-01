@@ -178,12 +178,19 @@ void Tokenizer::findToken(void)
 
 		if (!crtString.empty())
 		{
-			cout << setw(5) << setfill(' ') << setiosflags(ios::left) << crtString;
-			cout << setw(5) << setfill(' ') << setiosflags(ios::left) << crtToken.tokenType;
-			cout << setw(2) << setfill('0') << crtToken.tokenValue << endl;
+			tokenList.push_back(crtToken);
 		}
 	}
 
+	if (!tokenList.empty())
+	{
+		for (size_t i = 0; i < tokenList.size(); i++)
+		{
+			//cout << setw(5) << setfill(' ') << setiosflags(ios::left) << crtString;
+			cout << setw(5) << setfill(' ') << setiosflags(ios::left) << tokenList.at(i).tokenType;
+			cout << setw(2) << setfill('0') << tokenList.at(i).tokenValue << endl;
+		}
+	}
 #undef _read_crt
 #undef _read_next
 }
