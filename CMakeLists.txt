@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.8)
 
-set(PROJ_NAME St-CCompiler)
+set(PROJ_NAME ST-CCompiler)
 project(${PROJ_NAME})
 
-aux_source_directory(src SOURCE_DIR)
+FILE(GLOB HEADER_LIST "src/*.h")
+FILE(GLOB SOURCE_LIST "src/*.cpp")
 
-add_executable(${PROJ_NAME} ${SOURCE_DIR})
+add_executable(${PROJ_NAME} ${SOURCE_LIST} ${HEADER_LIST})
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJ_NAME})
