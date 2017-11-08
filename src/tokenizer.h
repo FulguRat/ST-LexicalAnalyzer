@@ -39,6 +39,7 @@ typedef Type SType;
 //type of token
 typedef struct
 {
+	string tokenWord;
 	SType tokenType;
 	int tokenValue;
 }token;
@@ -53,19 +54,18 @@ public:
 	CType judgeCType(const char tmpChar);
 	
 	//find next token
-	void findToken(void);
+	token findNextToken(void);
+
+	void findAllToken(void);
 
 private:
 	ifstream srcCode;
 
 	//current character
 	char crtChar;
-	//whether next character have been read
-	bool nextReadFlag;
 
 	string crtString;
 
 	token crtToken;
-	vector<token> tokenList;
 };
 #endif //_TOKENIZER_H

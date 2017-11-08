@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
 	Tokenizer tokenizer("src.c");
 
-	tokenizer.findToken();
+	tokenizer.findAllToken();
 
 	return 0;
 }

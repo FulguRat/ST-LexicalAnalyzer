@@ -43,154 +43,147 @@ CType Tokenizer::judgeCType(const char tmpChar)
 }
 
 //find next token
-void Tokenizer::findToken(void)
+token Tokenizer::findNextToken(void)
 {
-#define _read_crt(tmpChar)  do \
-							{ \
-								if (nextReadFlag == false) { srcCode >> tmpChar; } \
-								else { nextReadFlag = false; } \
-							}while(0)
-#define _read_next(tmpChar) do \
-							{ \
-								if (nextReadFlag == false) { srcCode >> tmpChar; nextReadFlag = true; } \
-								else { srcCode >> tmpChar; } \
-							}while(0)
+	crtToken.tokenWord.clear();
+	crtToken.tokenType = NONE_TYPE;
+	crtToken.tokenValue = -1;
 
-	nextReadFlag = false;
+	crtString.clear();
 
-	//find one string in a while()
+	srcCode >> crtChar;
+	if (srcCode.eof()) { return crtToken; }
+
+	while (judgeCType(crtChar) == NONE_TYPE || judgeCType(crtChar) == BLANK_TYPE)
+	{
+		srcCode >> crtChar;
+	}
+
+	switch (judgeCType(crtChar))
+	{
+	//keyword or identifier
+	case LETTER_TYPE:
+		crtString += crtChar;
+		srcCode >> crtChar;
+
+		while (judgeCType(crtChar) != BLANK_TYPE)
+		{
+			if (judgeCType(crtChar) == LETTER_TYPE ||
+				judgeCType(crtChar) == NUMBER_TYPE)
+			{
+				crtString += crtChar;
+				srcCode >> crtChar;
+					
+				continue;
+			}
+			else
+			{
+				break;
+			}
+		}
+		for (unsigned int i = 0; i < 6; i++)
+		{
+			if (crtString == keywdStr[i])
+			{
+				crtToken.tokenType = KEYWD_TYPE;
+				crtToken.tokenValue = 4 + i;
+				break;
+			}
+		}
+		if (crtToken.tokenType != KEYWD_TYPE)
+		{
+			crtToken.tokenType = IDENT_TYPE;
+			crtToken.tokenValue = 0;
+		}
+
+		break;
+
+	//const
+	case NUMBER_TYPE:
+		while (judgeCType(crtChar) == NUMBER_TYPE)
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+		}
+		crtToken.tokenType = CONST_TYPE;
+		crtToken.tokenValue = 3;
+		break;
+
+	//string
+	case D_QUOTE_TYPE:
+		srcCode >> crtChar;
+
+		while (judgeCType(crtChar) != D_QUOTE_TYPE)
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+		}
+		srcCode >> crtChar;
+		crtToken.tokenType = STRING_TYPE;
+		crtToken.tokenValue = 2;
+		break;
+
+	//character
+	case F_QUOTE_TYPE:
+		srcCode >> crtChar;
+		crtString += crtChar;
+
+		srcCode >> crtChar;
+		srcCode >> crtChar;
+		crtToken.tokenType = CHAR_TYPE;
+		crtToken.tokenValue = 1;
+		break;
+
+	//delimiter
+	case OTHER_TYPE:
+		if (crtChar == '>' || crtChar == '<' || crtChar == '=')
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+		}
+		if (judgeCType(crtChar) == OTHER_TYPE)
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+		}
+		for (unsigned int i = 0; i < 18; i++)
+		{
+			if (crtString == delimitStr[i])
+			{
+				crtToken.tokenType = DELIMIT_TYPE;
+				crtToken.tokenValue = 10 + i;
+				break;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (crtToken.tokenType != NONE_TYPE)
+	{
+		crtToken.tokenWord = crtString;
+		srcCode.seekg(-1, srcCode.cur);
+
+		return crtToken;
+	}
+	else
+	{
+		crtToken.tokenType == ERROR_TYPE;
+		cout << "Judge token type error (д├ бузе бу;)д├" << endl;
+		return crtToken;
+	}
+}
+
+void Tokenizer::findAllToken()
+{
+	token nextToken;
 	while (!srcCode.eof())
 	{
-		crtToken.tokenType = NONE_TYPE;
-		crtToken.tokenValue = -1;
-
-		crtString.clear();
-		_read_crt(crtChar);
-
-		switch (judgeCType(crtChar))
-		{
-		//keyword or identifier
-		case LETTER_TYPE:
-			crtString += crtChar;
-			//cout << crtChar;
-			_read_next(crtChar);
-
-			while (judgeCType(crtChar) != BLANK_TYPE)
-			{
-				if (judgeCType(crtChar) == LETTER_TYPE ||
-					judgeCType(crtChar) == NUMBER_TYPE)
-				{
-					crtString += crtChar;
-					//cout << crtChar;
-					_read_next(crtChar);
-					
-					continue;
-				}
-				else
-				{
-					break;
-				}
-			}
-			for (unsigned int i = 0; i < 6; i++)
-			{
-				if (crtString == keywdStr[i])
-				{
-					crtToken.tokenType = KEYWD_TYPE;
-					crtToken.tokenValue = 4 + i;
-					//cout << "   keyword" << i << endl;
-					break;
-				}
-			}
-			if (crtToken.tokenType != KEYWD_TYPE)
-			{
-				crtToken.tokenType = IDENT_TYPE;
-				crtToken.tokenValue = 0;
-				//cout << "   identifier" << endl;
-			}
-
-			break;
-
-		//const
-		case NUMBER_TYPE:
-			while (judgeCType(crtChar) == NUMBER_TYPE)
-			{
-				//cout << crtChar;
-				_read_next(crtChar);
-			}
-			crtToken.tokenType = CONST_TYPE;
-			crtToken.tokenValue = 3;
-			//cout << "   const" << endl;
-			break;
-
-		//string
-		case D_QUOTE_TYPE:
-			_read_next(crtChar);
-			while (judgeCType(crtChar) != D_QUOTE_TYPE)
-			{
-				//cout << crtChar;
-				_read_next(crtChar);
-			}
-			_read_next(crtChar);
-			crtToken.tokenType = STRING_TYPE;
-			crtToken.tokenValue = 2;
-			//cout << "   string" << endl;
-			break;
-
-		//character
-		case F_QUOTE_TYPE:
-			_read_next(crtChar);
-			//cout << crtChar;
-			_read_next(crtChar);
-			_read_next(crtChar);
-			crtToken.tokenType = CHAR_TYPE;
-			crtToken.tokenValue = 1;
-			//cout << "   character" << endl;
-			break;
-
-		//delimiter
-		case OTHER_TYPE:
-			if (crtChar == '>' || crtChar == '<' || crtChar == '=')
-			{
-				crtString += crtChar;
-				//cout << crtChar;
-				_read_next(crtChar);
-			}
-			if (judgeCType(crtChar) == OTHER_TYPE)
-			{
-				crtString += crtChar;
-				//cout << crtChar;
-				_read_next(crtChar);
-			}
-			for (unsigned int i = 0; i < 18; i++)
-			{
-				if (crtString == delimitStr[i])
-				{
-					crtToken.tokenType = DELIMIT_TYPE;
-					crtToken.tokenValue = 10 + i;
-					//cout << "   delimiter" << i << endl;
-					break;
-				}
-			}
-			break;
-		default:
-			break;
-		}
-
-		if (!crtString.empty())
-		{
-			tokenList.push_back(crtToken);
-		}
+		nextToken = findNextToken();
+		cout << setiosflags(ios::left) << setw(6) << nextToken.tokenWord;
+		cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
+		cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
+		cout << endl;
 	}
-
-	if (!tokenList.empty())
-	{
-		for (size_t i = 0; i < tokenList.size(); i++)
-		{
-			//cout << setw(5) << setfill(' ') << setiosflags(ios::left) << crtString;
-			cout << setw(5) << setfill(' ') << setiosflags(ios::left) << tokenList.at(i).tokenType;
-			cout << setw(2) << setfill('0') << tokenList.at(i).tokenValue << endl;
-		}
-	}
-#undef _read_crt
-#undef _read_next
 }
