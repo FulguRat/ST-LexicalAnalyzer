@@ -4,6 +4,11 @@ Tokenizer::Tokenizer(const char* srcFile)
 {
 	//open source code file with file stream
 	srcCode.open(srcFile, ios::in);
+	if (!srcCode.is_open())
+	{
+		cout << "Source Code Not Found ¡Ñ©n¡Ñ" << endl;
+		exit(1);
+	}
 	srcCode >> noskipws;
 }
 
