@@ -105,6 +105,37 @@ token Tokenizer::findNextToken(void)
 			crtString += crtChar;
 			srcCode >> crtChar;
 		}
+
+		if (crtChar == '.')
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+
+			while (judgeCType(crtChar) == NUMBER_TYPE)
+			{
+				crtString += crtChar;
+				srcCode >> crtChar;
+			}
+		}
+
+		if (crtChar == 'e')
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+
+			if (crtChar == '+' || crtChar == '-')
+			{
+				crtString += crtChar;
+				srcCode >> crtChar;
+			}
+
+			while (judgeCType(crtChar) == NUMBER_TYPE)
+			{
+				crtString += crtChar;
+				srcCode >> crtChar;
+			}
+		}
+
 		crtToken.tokenType = CONST_TYPE;
 		crtToken.tokenValue = 3;
 		break;

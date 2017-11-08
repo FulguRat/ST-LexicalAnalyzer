@@ -1,3 +1,7 @@
+16
+3.5667
+3e23
+4e-245
 int main(void)
 {
     int a = 1, d = 2, c;
