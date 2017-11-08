@@ -212,7 +212,7 @@ void Tokenizer::findAllToken()
 	while (!srcCode.eof())
 	{
 		nextToken = findNextToken();
-		cout << setiosflags(ios::left) << setw(6) << nextToken.tokenWord;
+		cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
 		cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
 		cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
 		cout << endl;

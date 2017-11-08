@@ -1,8 +1,12 @@
 # CCompiler
-curriculum project of compiling-principle
+Curriculum project of compiling-principle
 
-Leader: Shi Yinghui
-Members: Zhang Yuhang   Wu Bo   Liang Chen
+
+
+**Leader:** Shi Yinghui
+
+**Members:** Zhang Yuhang / Wu Bo / Liang Chen
+
 -----
 
 ### Bug log
