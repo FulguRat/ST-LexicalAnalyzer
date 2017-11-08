@@ -67,8 +67,9 @@ token Tokenizer::findNextToken(void)
 		{ 
 			return crtToken; 
 		}
-	} while (judgeCType(crtChar) == NONE_TYPE || judgeCType(crtChar) == BLANK_TYPE);
+	} while (judgeCType(crtChar) == BLANK_TYPE);
 	
+
 	//Judge type of next token
 	switch (judgeCType(crtChar))
 	{
@@ -77,21 +78,13 @@ token Tokenizer::findNextToken(void)
 		crtString += crtChar;
 		srcCode >> crtChar;
 
-		while (judgeCType(crtChar) != BLANK_TYPE)
+		while (judgeCType(crtChar) == LETTER_TYPE || judgeCType(crtChar) == NUMBER_TYPE)
 		{
-			if (judgeCType(crtChar) == LETTER_TYPE ||
-				judgeCType(crtChar) == NUMBER_TYPE)
-			{
-				crtString += crtChar;
-				srcCode >> crtChar;
-					
-				continue;
-			}
-			else
-			{
-				break;
-			}
+			crtString += crtChar;
+			srcCode >> crtChar;
 		}
+
+		//match keyword
 		for (unsigned int i = 0; i < 6; i++)
 		{
 			if (crtString == keywdStr[i])
@@ -110,7 +103,12 @@ token Tokenizer::findNextToken(void)
 		break;
 
 	//const
+	//(+/-)***.***e(+/-)***  (* is a number)
+	//For example: +6.23e-89
 	case NUMBER_TYPE:
+		crtString += crtChar;
+		srcCode >> crtChar;
+
 		while (judgeCType(crtChar) == NUMBER_TYPE)
 		{
 			crtString += crtChar;
@@ -171,6 +169,13 @@ token Tokenizer::findNextToken(void)
 		crtString += crtChar;
 
 		srcCode >> crtChar;
+		if (judgeCType(crtChar) != F_QUOTE_TYPE)
+		{
+			crtToken.tokenType = ERROR_TYPE;
+			cout << "Judge token type error (д├ бузе бу;)д├, position 3" << endl;
+			exit(1);
+		}
+
 		srcCode >> crtChar;
 		crtToken.tokenType = CHAR_TYPE;
 		crtToken.tokenValue = 1;
@@ -188,6 +193,8 @@ token Tokenizer::findNextToken(void)
 			crtString += crtChar;
 			srcCode >> crtChar;
 		}
+
+		//match delimit type
 		for (unsigned int i = 0; i < 18; i++)
 		{
 			if (crtString == delimitStr[i])
@@ -197,8 +204,18 @@ token Tokenizer::findNextToken(void)
 				break;
 			}
 		}
+		if (crtToken.tokenType != DELIMIT_TYPE)
+		{
+			crtToken.tokenType = ERROR_TYPE;
+			cout << "Judge token type error (д├ бузе бу;)д├, position 1" << endl;
+			exit(1);
+		}
 		break;
+
 	default:
+		crtToken.tokenType = ERROR_TYPE;
+		cout << "Judge token type error (д├ бузе бу;)д├, position 2" << endl;
+		exit(1);
 		break;
 	}
 
@@ -212,8 +229,8 @@ token Tokenizer::findNextToken(void)
 	else
 	{
 		crtToken.tokenType = ERROR_TYPE;
-		cout << "Judge token type error (д├ бузе бу;)д├" << endl;
-		return crtToken;
+		cout << "Judge token type error (д├ бузе бу;)д├, position 3" << endl;
+		exit(1);
 	}
 }
 
