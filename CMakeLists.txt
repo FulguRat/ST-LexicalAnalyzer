@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-set(PROJ_NAME ST-CCompiler)
+set(PROJ_NAME CCompiler)
 project(${PROJ_NAME})
 
 FILE(GLOB HEADER_LIST "src/*.h")
