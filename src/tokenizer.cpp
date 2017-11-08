@@ -50,20 +50,26 @@ CType Tokenizer::judgeCType(const char tmpChar)
 //find next token
 token Tokenizer::findNextToken(void)
 {
+	//initialize current token
 	crtToken.tokenWord.clear();
 	crtToken.tokenType = NONE_TYPE;
 	crtToken.tokenValue = -1;
 
+	//initialize current string
 	crtString.clear();
 
-	srcCode >> crtChar;
-	if (srcCode.eof()) { return crtToken; }
-
-	while (judgeCType(crtChar) == NONE_TYPE || judgeCType(crtChar) == BLANK_TYPE)
+	//input characters from srcCode until one character has a valid type
+	do
 	{
 		srcCode >> crtChar;
-	}
-
+		//if all of srcCode has been read, return a empty token
+		if (srcCode.eof())
+		{ 
+			return crtToken; 
+		}
+	} while (judgeCType(crtChar) == NONE_TYPE || judgeCType(crtChar) == BLANK_TYPE);
+	
+	//Judge type of next token
 	switch (judgeCType(crtChar))
 	{
 	//keyword or identifier
@@ -217,9 +223,12 @@ void Tokenizer::findAllToken()
 	while (!srcCode.eof())
 	{
 		nextToken = findNextToken();
-		cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
-		cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
-		cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
-		cout << endl;
+		if (nextToken.tokenType != NONE_TYPE)
+		{
+			cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
+			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
+			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
+			cout << endl;
+		}
 	}
 }
