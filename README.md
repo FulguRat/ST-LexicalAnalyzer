@@ -1,6 +1,8 @@
-# ST-CCompiler
-C compiler by ST42
+# CCompiler
+curriculum project of compiling-principle
 
+Leader: Shi Yinghui
+Members: Zhang Yuhang   Wu Bo   Liang Chen
 -----
 
 ### Bug log
