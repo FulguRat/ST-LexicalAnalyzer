@@ -10,4 +10,5 @@ int main(void)
     char ch[10] = "ok";
     char x, y = 'a';
     c = a + d;
+    c += a; 
 }
