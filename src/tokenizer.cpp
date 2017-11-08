@@ -205,7 +205,7 @@ token Tokenizer::findNextToken(void)
 	}
 	else
 	{
-		crtToken.tokenType == ERROR_TYPE;
+		crtToken.tokenType = ERROR_TYPE;
 		cout << "Judge token type error (д├ бузе бу;)д├" << endl;
 		return crtToken;
 	}

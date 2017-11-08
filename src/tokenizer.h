@@ -2,6 +2,7 @@
 #define _TOKENIZER_H
 
 #include <iostream>
+#include <stdlib.h>
 #include <iomanip>
 #include <fstream>
 #include <string>
