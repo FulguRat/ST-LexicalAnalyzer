@@ -34,13 +34,13 @@ CType Tokenizer::judgeCType(const char tmpChar)
 	else if (tmpChar == ' ' || tmpChar == '\n')
 		return BLANK_TYPE;
 
-	//is double quote?
-	else if (tmpChar == '\"')
-		return D_QUOTE_TYPE;
-
 	//is forward quote?
 	else if (tmpChar == '\'')
 		return F_QUOTE_TYPE;
+
+	//is double quote?
+	else if (tmpChar == '\"')
+		return D_QUOTE_TYPE;
 
 	//else type
 	else
@@ -61,9 +61,8 @@ token Tokenizer::findNextToken(void)
 	//input characters from srcCode until one character has a valid type
 	do
 	{
-		srcCode >> crtChar;
 		//if all of srcCode has been read, return a empty token
-		if (srcCode.eof())
+		if (!(srcCode >> crtChar))
 		{ 
 			return crtToken; 
 		}
@@ -85,9 +84,9 @@ token Tokenizer::findNextToken(void)
 		}
 
 		//match keyword
-		for (unsigned int i = 0; i < 6; i++)
+		for (unsigned int i = 0; i < SIZE_OF_KEYWD_LIST; i++)
 		{
-			if (crtString == keywdStr[i])
+			if (crtString == keywdList[i])
 			{
 				crtToken.tokenType = KEYWD_TYPE;
 				crtToken.tokenValue = 4 + i;
@@ -149,6 +148,24 @@ token Tokenizer::findNextToken(void)
 		crtToken.tokenValue = 3;
 		break;
 
+	//character
+	case F_QUOTE_TYPE:
+		srcCode >> crtChar;
+		crtString += crtChar;
+
+		srcCode >> crtChar;
+		if (judgeCType(crtChar) != F_QUOTE_TYPE)
+		{
+			crtToken.tokenType = ERROR_TYPE;
+			cout << "Find next token error (д├ бузе бу;)д├,  Position 4 " << endl;
+			exit(1);
+		}
+
+		srcCode >> crtChar;
+		crtToken.tokenType = CHAR_TYPE;
+		crtToken.tokenValue = 1;
+		break;
+
 	//string
 	case D_QUOTE_TYPE:
 		srcCode >> crtChar;
@@ -163,58 +180,56 @@ token Tokenizer::findNextToken(void)
 		crtToken.tokenValue = 2;
 		break;
 
-	//character
-	case F_QUOTE_TYPE:
-		srcCode >> crtChar;
-		crtString += crtChar;
-
-		srcCode >> crtChar;
-		if (judgeCType(crtChar) != F_QUOTE_TYPE)
-		{
-			crtToken.tokenType = ERROR_TYPE;
-			cout << "Judge token type error (д├ бузе бу;)д├, position 3" << endl;
-			exit(1);
-		}
-
-		srcCode >> crtChar;
-		crtToken.tokenType = CHAR_TYPE;
-		crtToken.tokenValue = 1;
-		break;
-
 	//delimiter
 	case OTHER_TYPE:
-		if (crtChar == '>' || crtChar == '<' || crtChar == '=')
-		{
-			crtString += crtChar;
-			srcCode >> crtChar;
-		}
+		crtString += crtChar;
+		srcCode >> crtChar;
+
+		//if next character is also OTHER_TYPE
 		if (judgeCType(crtChar) == OTHER_TYPE)
 		{
 			crtString += crtChar;
-			srcCode >> crtChar;
+
+			//match delimit type
+			for (unsigned int i = 0; i < SIZE_OF_DELIMIT_LIST; i++)
+			{
+				if (crtString == delimitList[i])
+				{
+					crtToken.tokenType = DELIMIT_TYPE;
+					crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
+					srcCode >> crtChar;
+					break;
+				}
+			}
+			if (crtToken.tokenType != DELIMIT_TYPE)
+			{
+				crtString.pop_back();
+				srcCode.seekg(-1, srcCode.cur);
+			}
 		}
 
 		//match delimit type
-		for (unsigned int i = 0; i < 18; i++)
+		for (unsigned int i = 0; i < SIZE_OF_DELIMIT_LIST; i++)
 		{
-			if (crtString == delimitStr[i])
+			if (crtString == delimitList[i])
 			{
 				crtToken.tokenType = DELIMIT_TYPE;
-				crtToken.tokenValue = 10 + i;
+				crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
+				srcCode >> crtChar;
 				break;
 			}
 		}
 		if (crtToken.tokenType != DELIMIT_TYPE)
 		{
 			crtToken.tokenType = ERROR_TYPE;
-			cout << "Judge token type error (д├ бузе бу;)д├, position 1" << endl;
+			cout << "Find next token error (д├ бузе бу;)д├, Position 1 " << endl;
 			exit(1);
 		}
 		break;
 
 	default:
 		crtToken.tokenType = ERROR_TYPE;
-		cout << "Judge token type error (д├ бузе бу;)д├, position 2" << endl;
+		cout << "Find next token error (д├ бузе бу;)д├, Position 2 " << endl;
 		exit(1);
 		break;
 	}
@@ -223,13 +238,12 @@ token Tokenizer::findNextToken(void)
 	{
 		crtToken.tokenWord = crtString;
 		srcCode.seekg(-1, srcCode.cur);
-
 		return crtToken;
 	}
 	else
 	{
 		crtToken.tokenType = ERROR_TYPE;
-		cout << "Judge token type error (д├ бузе бу;)д├, position 3" << endl;
+		cout << "Find next token error (д├ бузе бу;)д├, Position 3 " << endl;
 		exit(1);
 	}
 }
@@ -237,7 +251,7 @@ token Tokenizer::findNextToken(void)
 void Tokenizer::findAllToken()
 {
 	token nextToken;
-	while (!srcCode.eof())
+	while (nextToken.tokenType != NONE_TYPE)
 	{
 		nextToken = findNextToken();
 		if (nextToken.tokenType != NONE_TYPE)

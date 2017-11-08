@@ -14,23 +14,30 @@ using namespace std;
 
 #define LETTER_TYPE   1
 #define NUMBER_TYPE   2
-#define D_QUOTE_TYPE  3
-#define F_QUOTE_TYPE  4
+#define F_QUOTE_TYPE  3
+#define D_QUOTE_TYPE  4
 #define BLANK_TYPE    5
 #define OTHER_TYPE    6
 
 #define IDENT_TYPE    1
 #define CONST_TYPE    2
-#define STRING_TYPE   3
-#define CHAR_TYPE     4
+#define CHAR_TYPE     3
+#define STRING_TYPE   4
 #define KEYWD_TYPE    5
 #define DELIMIT_TYPE  6
 #define ERROR_TYPE    7
 
 //list of keyword and boundary
-const string keywdStr[6] = { "int", "main", "void", "if", "else", "char" };
-const string delimitStr[18] = { ">=", "<=", "==", "=", ">", "<", "+", "-", "*", "/",
-                              "{", "}", ",", ";", "(", ")", "[", "]"};
+#define SIZE_OF_KEYWD_LIST 28
+const string keywdList[SIZE_OF_KEYWD_LIST] = 
+							{ "void", "int", "char", "float", "double", "short", "long", "signed", "unsigned",
+							"if", "else", "while", "do", "for", "switch", "case", "default", "break", "continue", 
+							"struct", "union", "enum", "typedef", "static", "extern", "include", "return","main" };
+
+#define SIZE_OF_DELIMIT_LIST 30
+const string delimitList[SIZE_OF_DELIMIT_LIST] = 
+							{ ">", "<", ">=", "<=", "==", "+", "-", "*", "/", "=", "&&", "||", "!", "&", "|",
+							"{", "}", "[", "]", "(", ")", ",", ";", ".", ":", "?", "#", "//", "/*", "*/"};
 
 //type of char & string
 typedef int Type;
