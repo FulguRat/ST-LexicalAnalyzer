@@ -31,7 +31,8 @@ CType Tokenizer::judgeCType(const char tmpChar)
 		return NUMBER_TYPE;
 
 	//is space or enter?
-	else if (tmpChar == ' ' || tmpChar == '\n')
+	else if (tmpChar == ' ' || tmpChar == '\f' || tmpChar == '\n' || 
+			tmpChar == '\r' || tmpChar == '\t' || tmpChar == '\v')
 		return BLANK_TYPE;
 
 	//is forward quote?
@@ -50,6 +51,13 @@ CType Tokenizer::judgeCType(const char tmpChar)
 //find next token
 token Tokenizer::findNextToken(void)
 {
+#define _err_report do \
+					{ \
+						crtToken.tokenType = ERROR_TYPE; \
+						cout << setiosflags(ios::left) << setw(9) << crtString << \
+								"Error token type (г■бвг■)" << endl; \
+					} while (0)\
+
 	//initialize current token
 	crtToken.tokenWord.clear();
 	crtToken.tokenType = NONE_TYPE;
@@ -156,9 +164,11 @@ token Tokenizer::findNextToken(void)
 		srcCode >> crtChar;
 		if (judgeCType(crtChar) != F_QUOTE_TYPE)
 		{
-			crtToken.tokenType = ERROR_TYPE;
-			cout << "Find next token error (д├ бузе бу;)д├,  Position 4 " << endl;
-			exit(1);
+			//crtToken.tokenType = ERROR_TYPE;
+			//cout << "Find next token error (д├ бузе бу;)д├,  Position 4 " << endl;
+			//exit(1);
+			_err_report;
+			break;
 		}
 
 		srcCode >> crtChar;
@@ -197,16 +207,16 @@ token Tokenizer::findNextToken(void)
 				{
 					crtToken.tokenType = DELIMIT_TYPE;
 					crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
-					srcCode >> crtChar;
+					srcCode.seekg(1, srcCode.cur);
 					break;
 				}
 			}
 			if (crtToken.tokenType != DELIMIT_TYPE)
 			{
 				crtString.pop_back();
-				srcCode.seekg(-1, srcCode.cur);
 			}
 		}
+		srcCode.seekg(-1, srcCode.cur);
 
 		//match delimit type
 		for (unsigned int i = 0; i < SIZE_OF_DELIMIT_LIST; i++)
@@ -215,22 +225,25 @@ token Tokenizer::findNextToken(void)
 			{
 				crtToken.tokenType = DELIMIT_TYPE;
 				crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
-				srcCode >> crtChar;
+				srcCode.seekg(1, srcCode.cur);
 				break;
 			}
 		}
 		if (crtToken.tokenType != DELIMIT_TYPE)
 		{
-			crtToken.tokenType = ERROR_TYPE;
-			cout << "Find next token error (д├ бузе бу;)д├, Position 1 " << endl;
-			exit(1);
+			//crtToken.tokenType = ERROR_TYPE;
+			//cout << "Find next token error (д├ бузе бу;)д├, Position 1 " << endl;
+			//exit(1);
+			_err_report;
+			break;
 		}
 		break;
 
 	default:
-		crtToken.tokenType = ERROR_TYPE;
-		cout << "Find next token error (д├ бузе бу;)д├, Position 2 " << endl;
-		exit(1);
+		//crtToken.tokenType = ERROR_TYPE;
+		//cout << "Find next token error (д├ бузе бу;)д├, Position 2 " << endl;
+		//exit(1);
+		_err_report;
 		break;
 	}
 
@@ -242,10 +255,13 @@ token Tokenizer::findNextToken(void)
 	}
 	else
 	{
-		crtToken.tokenType = ERROR_TYPE;
-		cout << "Find next token error (д├ бузе бу;)д├, Position 3 " << endl;
-		exit(1);
+		//crtToken.tokenType = ERROR_TYPE;
+		//cout << "Find next token error (д├ бузе бу;)д├, Position 3 " << endl;
+		//exit(1);
+		_err_report;
 	}
+
+#undef _err_report
 }
 
 void Tokenizer::findAllToken()
@@ -254,7 +270,7 @@ void Tokenizer::findAllToken()
 	while (nextToken.tokenType != NONE_TYPE)
 	{
 		nextToken = findNextToken();
-		if (nextToken.tokenType != NONE_TYPE)
+		if (nextToken.tokenType != NONE_TYPE && nextToken.tokenType != ERROR_TYPE)
 		{
 			cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
 			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
