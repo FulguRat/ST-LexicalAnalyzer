@@ -28,17 +28,25 @@ using namespace std;
 #define ERROR_TYPE    7
 
 //list of keyword and boundary
+//identifier   0
+//character    1
+//string       2
+//const        3
 #define SIZE_OF_KEYWD_LIST 28
 const string keywdList[SIZE_OF_KEYWD_LIST] = 
-							{ "void", "int", "char", "float", "double", "short", "long", "signed", "unsigned",
-							"if", "else", "while", "do", "for", "switch", "case", "default", "break", "continue", 
-							"struct", "union", "enum", "typedef", "static", "extern", "include", "return","main" };
+							{ "void"/*4*/, "int"/*5*/, "char"/*6*/, "float"/*7*/, "double"/*8*/, "short"/*9*/, "long"/*10*/, 
+							"signed"/*11*/, "unsigned"/*12*/, "if"/*13*/, "else"/*14*/, "while"/*15*/, "do"/*16*/, "for"/*17*/, 
+							"switch"/*18*/, "case"/*19*/, "default"/*20*/, "break"/*21*/, "continue"/*22*/, "struct"/*23*/, 
+							"union"/*24*/, "enum"/*25*/, "typedef"/*26*/, "static"/*27*/, "extern"/*28*/, "include"/*29*/, 
+							"return"/*30*/, "main"/*31*/ };
 
 #define SIZE_OF_DELIMIT_LIST 40
 const string delimitList[SIZE_OF_DELIMIT_LIST] = 
-							{ ">", "<", ">=", "<=", "==", "+", "-", "*", "/", "+=", "-=", "*=", "/=", "=", "!=",  
-							"++", "--", "&&", "||", "!", "&", "|", "&=", "|=", "{", "}", "[", "]", "(", ")", 
-							",", ";", ".", ":", "?", "#", "%", "//", "/*", "*/"};
+							{ ">"/*32*/, "<"/*33*/, ">="/*34*/, "<="/*35*/, "=="/*36*/, "+"/*37*/, "-"/*38*/, "*"/*39*/, "/"/*40*/, 
+							"+="/*41*/, "-="/*42*/, "*="/*43*/, "/="/*44*/, "="/*45*/, "!="/*46*/, "++"/*47*/, "--"/*48*/, 
+							"&&"/*49*/, "||"/*50*/, "!"/*51*/, "&"/*52*/, "|"/*53*/, "&="/*54*/, "|="/*55*/, "{"/*56*/, "}"/*57*/, 
+							"["/*58*/, "]"/*59*/, "("/*60*/, ")"/*61*/, ","/*62*/, ";"/*63*/, "."/*64*/, ":"/*65*/, "?"/*66*/, 
+							"#"/*67*/, "%"/*68*/, "//"/*69*/, "/*"/*70*/, "*/"/*71*/ };
 
 //type of char & string
 typedef int Type;
@@ -66,6 +74,7 @@ public:
 	//find next token
 	token findNextToken(void);
 
+	vector<token> tokenSet;
 	void findAllToken(void);
 
 private:

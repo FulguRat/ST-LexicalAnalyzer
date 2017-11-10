@@ -273,15 +273,18 @@ token Tokenizer::findNextToken(void)
 void Tokenizer::findAllToken()
 {
 	token nextToken;
+	tokenSet.clear();
+
 	while (nextToken.tokenType != NONE_TYPE)
 	{
 		nextToken = findNextToken();
 		if (nextToken.tokenType != NONE_TYPE && nextToken.tokenType != ERROR_TYPE)
 		{
-			cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
-			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
-			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
-			cout << endl;
+			tokenSet.push_back(nextToken);
+			//cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
+			//cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
+			//cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
+			//cout << endl;
 		}
 	}
 }
