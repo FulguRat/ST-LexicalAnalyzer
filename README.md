@@ -11,5 +11,4 @@ Curriculum project of compiling-principle
 
 ### Bug log
 
-1. 加入词法分析的错误报告机制
-2. 常数处理机未加入负数的处理
+1. 常数处理机未加入负数的处理

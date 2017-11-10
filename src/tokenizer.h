@@ -51,6 +51,7 @@ typedef struct
 	string tokenWord;
 	SType tokenType;
 	int tokenValue;
+	int tokenIndex;
 }token;
 
 class Tokenizer

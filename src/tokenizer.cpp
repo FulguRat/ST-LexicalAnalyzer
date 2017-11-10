@@ -117,7 +117,7 @@ token Tokenizer::findNextToken(void)
 		break;
 
 	//const
-	//(+/-)***.***e(+/-)***  (* is a number)
+	//***.***e(+/-)***  (* is a number)
 	//For example: +6.23e-89
 	case NUMBER_TYPE:
 		crtString += crtChar;
