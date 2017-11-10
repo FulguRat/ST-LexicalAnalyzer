@@ -193,7 +193,11 @@ token Tokenizer::findNextToken(void)
 		while (judgeCType(crtChar) != D_QUOTE_TYPE)
 		{
 			crtString += crtChar;
-			srcCode >> crtChar;
+			if (!(srcCode >> crtChar))
+			{
+				cout << "Error in position 5" << endl;
+				_err_report;
+			}
 		}
 		srcCode >> crtChar;
 		crtToken.tokenType = STRING_TYPE;
