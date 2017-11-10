@@ -34,11 +34,11 @@ const string keywdList[SIZE_OF_KEYWD_LIST] =
 							"if", "else", "while", "do", "for", "switch", "case", "default", "break", "continue", 
 							"struct", "union", "enum", "typedef", "static", "extern", "include", "return","main" };
 
-#define SIZE_OF_DELIMIT_LIST 39
+#define SIZE_OF_DELIMIT_LIST 40
 const string delimitList[SIZE_OF_DELIMIT_LIST] = 
 							{ ">", "<", ">=", "<=", "==", "+", "-", "*", "/", "+=", "-=", "*=", "/=", "=", "!=",  
 							"++", "--", "&&", "||", "!", "&", "|", "&=", "|=", "{", "}", "[", "]", "(", ")", 
-							",", ";", ".", ":", "?", "#", "//", "/*", "*/"};
+							",", ";", ".", ":", "?", "#", "%", "//", "/*", "*/"};
 
 //type of char & string
 typedef int Type;

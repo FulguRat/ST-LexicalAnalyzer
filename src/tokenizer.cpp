@@ -56,7 +56,8 @@ token Tokenizer::findNextToken(void)
 						crtToken.tokenType = ERROR_TYPE; \
 						cout << setiosflags(ios::left) << setw(9) << crtString << \
 								"Error token type (г■бвг■)" << endl; \
-					} while (0)\
+						return crtToken; \
+					} while (0) \
 
 	//initialize current token
 	crtToken.tokenWord.clear();
@@ -83,12 +84,18 @@ token Tokenizer::findNextToken(void)
 	//keyword or identifier
 	case LETTER_TYPE:
 		crtString += crtChar;
-		srcCode >> crtChar;
+		if (!(srcCode >> crtChar))
+		{
+			crtChar = ' ';
+		}
 
 		while (judgeCType(crtChar) == LETTER_TYPE || judgeCType(crtChar) == NUMBER_TYPE)
 		{
 			crtString += crtChar;
-			srcCode >> crtChar;
+			if (!(srcCode >> crtChar))
+			{
+				break;
+			}
 		}
 
 		//match keyword
@@ -114,12 +121,18 @@ token Tokenizer::findNextToken(void)
 	//For example: +6.23e-89
 	case NUMBER_TYPE:
 		crtString += crtChar;
-		srcCode >> crtChar;
+		if (!(srcCode >> crtChar))
+		{
+			crtChar = ' ';
+		}
 
 		while (judgeCType(crtChar) == NUMBER_TYPE)
 		{
 			crtString += crtChar;
-			srcCode >> crtChar;
+			if (!(srcCode >> crtChar))
+			{
+				break;
+			}
 		}
 
 		if (crtChar == '.')
@@ -164,11 +177,8 @@ token Tokenizer::findNextToken(void)
 		srcCode >> crtChar;
 		if (judgeCType(crtChar) != F_QUOTE_TYPE)
 		{
-			//crtToken.tokenType = ERROR_TYPE;
-			//cout << "Find next token error (д├ бузе бу;)д├,  Position 4 " << endl;
-			//exit(1);
+			cout << "Error in position 1" << endl;
 			_err_report;
-			break;
 		}
 
 		srcCode >> crtChar;
@@ -231,20 +241,14 @@ token Tokenizer::findNextToken(void)
 		}
 		if (crtToken.tokenType != DELIMIT_TYPE)
 		{
-			//crtToken.tokenType = ERROR_TYPE;
-			//cout << "Find next token error (д├ бузе бу;)д├, Position 1 " << endl;
-			//exit(1);
+			cout << "Error in position 2" << endl;
 			_err_report;
-			break;
 		}
 		break;
 
 	default:
-		//crtToken.tokenType = ERROR_TYPE;
-		//cout << "Find next token error (д├ бузе бу;)д├, Position 2 " << endl;
-		//exit(1);
+		cout << "Error in position 3" << endl;
 		_err_report;
-		break;
 	}
 
 	if (crtToken.tokenType != NONE_TYPE)
@@ -255,9 +259,7 @@ token Tokenizer::findNextToken(void)
 	}
 	else
 	{
-		//crtToken.tokenType = ERROR_TYPE;
-		//cout << "Find next token error (д├ бузе бу;)д├, Position 3 " << endl;
-		//exit(1);
+		cout << "Error in position 4" << endl;
 		_err_report;
 	}
 
