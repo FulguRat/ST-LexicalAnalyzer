@@ -75,10 +75,11 @@ public:
 	//find next token
 	token findNextToken(void);
 
-	//output keyword list, delimiter list and const list
-	void outputKeywdList();
-	void outputDelimitList();
-	void outputConstList();
+	//output keyword list, delimiter list or const list
+	vector<string> keywdSet;
+	vector<string> delimitSet;
+	vector<string> constSet;
+	void outputList(vector<string> list);
 
 	//find all token and put them to a vector
 	vector<token> tokenSet;
@@ -94,8 +95,6 @@ private:
 
 	token crtToken;
 
-	vector<string> keywdSet;
-	vector<string> delimitSet;
-	vector<string> constSet;
+	void pushBackNoRepeat(vector<string> &list, string str);
 };
 #endif //_TOKENIZER_H

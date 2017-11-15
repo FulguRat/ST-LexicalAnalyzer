@@ -104,7 +104,7 @@ token Tokenizer::findNextToken(void)
 			if (crtString == keywdList[i])
 			{
 				crtToken.tokenType = KEYWD_TYPE;
-				keywdSet.push_back(crtString);
+				pushBackNoRepeat(keywdSet, crtString);
 				crtToken.tokenValue = 4 + i;
 				break;
 			}
@@ -169,7 +169,7 @@ token Tokenizer::findNextToken(void)
 			}
 		}
 
-		constSet.push_back(crtString);
+		pushBackNoRepeat(constSet, crtString);
 		crtToken.tokenValue = 3;
 		break;
 
@@ -224,7 +224,7 @@ token Tokenizer::findNextToken(void)
 				if (crtString == delimitList[i])
 				{
 					crtToken.tokenType = DELIMIT_TYPE;
-					delimitSet.push_back(crtString);
+					pushBackNoRepeat(delimitSet, crtString);
 					crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
 					srcCode.seekg(1, srcCode.cur);
 					break;
@@ -294,26 +294,19 @@ void Tokenizer::findAllToken()
 	}
 }
 
-void Tokenizer::outputKeywdList()
+void Tokenizer::outputList(vector<string> list)
 {
-	for (size_t i = 0; i < keywdSet.size(); i++)
+	for (size_t i = 0; i < list.size(); i++)
 	{
-		cout << keywdSet[i] << endl;
+		cout << list[i] << endl;
 	}
 }
 
-void Tokenizer::outputDelimitList()
+void Tokenizer::pushBackNoRepeat(vector<string> &list, string str)
 {
-	for (size_t i = 0; i < delimitSet.size(); i++)
+	for (size_t i = 0; i < list.size(); i++)
 	{
-		cout << delimitSet[i] << endl;
+		if (list[i] == str) { return; }
 	}
-}
-
-void Tokenizer::outputConstList()
-{
-	for (size_t i = 0; i < constSet.size(); i++)
-	{
-		cout << constSet[i] << endl;
-	}
+	list.push_back(str);
 }
