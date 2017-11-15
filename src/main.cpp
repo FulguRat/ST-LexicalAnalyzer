@@ -9,5 +9,9 @@ int main(int argc, char* argv[])
 
 	tokenizer.findAllToken();
 
+	tokenizer.outputKeywdList();
+	tokenizer.outputDelimitList();
+	tokenizer.outputConstList();
+
 	return 0;
 }

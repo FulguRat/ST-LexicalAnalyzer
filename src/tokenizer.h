@@ -20,14 +20,15 @@ using namespace std;
 #define OTHER_TYPE    6
 
 #define IDENT_TYPE    1
-#define CONST_TYPE    2
-#define CHAR_TYPE     3
-#define STRING_TYPE   4
-#define KEYWD_TYPE    5
-#define DELIMIT_TYPE  6
-#define ERROR_TYPE    7
+#define INTEGER_TYPE  2
+#define FLOAT_TYPE    3
+#define CHAR_TYPE     4
+#define STRING_TYPE   5
+#define KEYWD_TYPE    6
+#define DELIMIT_TYPE  7
+#define ERROR_TYPE    8
 
-//list of keyword and boundary
+//list of keyword and delimiter
 //identifier   0
 //character    1
 //string       2
@@ -74,6 +75,12 @@ public:
 	//find next token
 	token findNextToken(void);
 
+	//output keyword list, delimiter list and const list
+	void outputKeywdList();
+	void outputDelimitList();
+	void outputConstList();
+
+	//find all token and put them to a vector
 	vector<token> tokenSet;
 	void findAllToken(void);
 
@@ -86,5 +93,9 @@ private:
 	string crtString;
 
 	token crtToken;
+
+	vector<string> keywdSet;
+	vector<string> delimitSet;
+	vector<string> constSet;
 };
 #endif //_TOKENIZER_H

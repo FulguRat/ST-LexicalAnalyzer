@@ -311,11 +311,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Code\Simplified-CCompiler\src\RDparser.cpp"  />
     <ClCompile Include="C:\Code\Simplified-CCompiler\src\main.cpp"  />
     <ClCompile Include="C:\Code\Simplified-CCompiler\src\tokenizer.cpp"  />
-    <ClInclude Include="C:\Code\Simplified-CCompiler\src\RDparser.h" />
-    <ClInclude Include="C:\Code\Simplified-CCompiler\src\parser.h" />
     <ClInclude Include="C:\Code\Simplified-CCompiler\src\tokenizer.h" />
   </ItemGroup>
   <ItemGroup>

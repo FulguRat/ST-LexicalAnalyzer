@@ -104,6 +104,7 @@ token Tokenizer::findNextToken(void)
 			if (crtString == keywdList[i])
 			{
 				crtToken.tokenType = KEYWD_TYPE;
+				keywdSet.push_back(crtString);
 				crtToken.tokenValue = 4 + i;
 				break;
 			}
@@ -120,6 +121,7 @@ token Tokenizer::findNextToken(void)
 	//***.***e(+/-)***  (* is a number)
 	//For example: +6.23e-89
 	case NUMBER_TYPE:
+		crtToken.tokenType = INTEGER_TYPE;
 		crtString += crtChar;
 		if (!(srcCode >> crtChar))
 		{
@@ -137,6 +139,7 @@ token Tokenizer::findNextToken(void)
 
 		if (crtChar == '.')
 		{
+			crtToken.tokenType = FLOAT_TYPE;
 			crtString += crtChar;
 			srcCode >> crtChar;
 
@@ -149,6 +152,7 @@ token Tokenizer::findNextToken(void)
 
 		if (crtChar == 'e')
 		{
+			//fix me, 此处将科学计数法暂时归入了浮点数类
 			crtString += crtChar;
 			srcCode >> crtChar;
 
@@ -165,7 +169,7 @@ token Tokenizer::findNextToken(void)
 			}
 		}
 
-		crtToken.tokenType = CONST_TYPE;
+		constSet.push_back(crtString);
 		crtToken.tokenValue = 3;
 		break;
 
@@ -220,6 +224,7 @@ token Tokenizer::findNextToken(void)
 				if (crtString == delimitList[i])
 				{
 					crtToken.tokenType = DELIMIT_TYPE;
+					delimitSet.push_back(crtString);
 					crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
 					srcCode.seekg(1, srcCode.cur);
 					break;
@@ -286,5 +291,29 @@ void Tokenizer::findAllToken()
 			//cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
 			//cout << endl;
 		}
+	}
+}
+
+void Tokenizer::outputKeywdList()
+{
+	for (size_t i = 0; i < keywdSet.size(); i++)
+	{
+		cout << keywdSet[i] << endl;
+	}
+}
+
+void Tokenizer::outputDelimitList()
+{
+	for (size_t i = 0; i < delimitSet.size(); i++)
+	{
+		cout << delimitSet[i] << endl;
+	}
+}
+
+void Tokenizer::outputConstList()
+{
+	for (size_t i = 0; i < constSet.size(); i++)
+	{
+		cout << constSet[i] << endl;
 	}
 }
