@@ -243,6 +243,7 @@ token Tokenizer::findNextToken(void)
 			if (crtString == delimitList[i])
 			{
 				crtToken.tokenType = DELIMIT_TYPE;
+				pushBackNoRepeat(delimitSet, crtString);
 				crtToken.tokenValue = SIZE_OF_KEYWD_LIST + 4 + i;
 				srcCode.seekg(1, srcCode.cur);
 				break;
