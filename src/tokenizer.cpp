@@ -89,7 +89,7 @@ token Tokenizer::findNextToken(void)
 					{
 						return crtToken;
 					}
-				} while (crtChar == '\n');
+				} while (crtChar != '\n');
 			}
 			// "/* ... */"
 			else if (crtChar == '*')
@@ -104,7 +104,11 @@ token Tokenizer::findNextToken(void)
 					if (crtChar == '*')
 					{
 						srcCode >> crtChar;
-						if (crtChar == '/') break;
+						if (crtChar == '/')
+						{
+							srcCode >> crtChar;
+							break;
+						}
 					}
 				}
 			}
