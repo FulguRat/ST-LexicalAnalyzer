@@ -70,13 +70,53 @@ token Tokenizer::findNextToken(void)
 	//input characters from srcCode until one character has a valid type
 	do
 	{
-		//if all of srcCode has been read, return a empty token
+		//if all of srcCode has been read, return an empty token
 		if (!(srcCode >> crtChar))
 		{ 
 			return crtToken; 
 		}
+
+		//is it annotation?
+		if (crtChar == '/')
+		{
+			srcCode >> crtChar;
+			// "//"
+			if (crtChar == '/')
+			{
+				do
+				{
+					if (!(srcCode >> crtChar))
+					{
+						return crtToken;
+					}
+				} while (crtChar == '\n');
+			}
+			// "/* ... */"
+			else if (crtChar == '*')
+			{
+				while (true)
+				{
+					if (!(srcCode >> crtChar))
+					{
+						return crtToken;
+					}
+
+					if (crtChar == '*')
+					{
+						srcCode >> crtChar;
+						if (crtChar == '/') break;
+					}
+				}
+			}
+			//not annotation
+			else
+			{
+				srcCode.seekg(-1, srcCode.cur);
+				crtChar = '/';
+			}
+		}
+
 	} while (judgeCType(crtChar) == BLANK_TYPE);
-	
 
 	//Judge type of next token
 	switch (judgeCType(crtChar))
@@ -287,10 +327,10 @@ void Tokenizer::findAllToken()
 		if (nextToken.tokenType != NONE_TYPE && nextToken.tokenType != ERROR_TYPE)
 		{
 			tokenSet.push_back(nextToken);
-			//cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
-			//cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
-			//cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
-			//cout << endl;
+			cout << setiosflags(ios::left) << setw(9) << nextToken.tokenWord;
+			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenType;
+			cout << setiosflags(ios::left) << setw(4) << nextToken.tokenValue;
+			cout << endl;
 		}
 	}
 }

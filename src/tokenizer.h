@@ -26,7 +26,8 @@ using namespace std;
 #define STRING_TYPE   5
 #define KEYWD_TYPE    6
 #define DELIMIT_TYPE  7
-#define ERROR_TYPE    8
+#define TEMP_TYPE     8
+#define ERROR_TYPE    9
 
 //list of keyword and delimiter
 //identifier   0
