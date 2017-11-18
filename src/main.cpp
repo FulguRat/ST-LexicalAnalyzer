@@ -9,10 +9,10 @@ int main(int argc, char* argv[])
 
 	tokenizer.findAllToken();
 
-	tokenizer.outputList(tokenizer.keywdSet);
-	tokenizer.outputList(tokenizer.delimitSet);
-	tokenizer.outputList(tokenizer.identifierSet);
-	tokenizer.outputList(tokenizer.constSet);
+	//tokenizer.outputList(tokenizer.keywdSet);
+	//tokenizer.outputList(tokenizer.delimitSet);
+	//tokenizer.outputList(tokenizer.identifierSet);
+	//tokenizer.outputList(tokenizer.constSet);
 
 	return 0;
 }

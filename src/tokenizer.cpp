@@ -43,6 +43,10 @@ CType Tokenizer::judgeCType(const char tmpChar)
 	else if (tmpChar == '\"')
 		return D_QUOTE_TYPE;
 
+	//is underline?
+	else if (tmpChar == '_')
+		return UDLINE_TYPE;
+
 	//else type
 	else
 		return OTHER_TYPE;
@@ -79,7 +83,11 @@ token Tokenizer::findNextToken(void)
 		//is it annotation?
 		if (crtChar == '/')
 		{
-			srcCode >> crtChar;
+			if (!(srcCode >> crtChar))
+			{
+				break;
+			}
+
 			// "//"
 			if (crtChar == '/')
 			{
@@ -126,6 +134,7 @@ token Tokenizer::findNextToken(void)
 	switch (judgeCType(crtChar))
 	{
 	//keyword or identifier
+	case UDLINE_TYPE:
 	case LETTER_TYPE:
 		crtString += crtChar;
 		if (!(srcCode >> crtChar))
@@ -133,7 +142,8 @@ token Tokenizer::findNextToken(void)
 			crtChar = ' ';
 		}
 
-		while (judgeCType(crtChar) == LETTER_TYPE || judgeCType(crtChar) == NUMBER_TYPE)
+		while (judgeCType(crtChar) == LETTER_TYPE || judgeCType(crtChar) == NUMBER_TYPE || 
+			judgeCType(crtChar) == UDLINE_TYPE)
 		{
 			crtString += crtChar;
 			if (!(srcCode >> crtChar))
@@ -197,7 +207,7 @@ token Tokenizer::findNextToken(void)
 
 		if (crtChar == 'e')
 		{
-			//fix me, 此处将科学计数法暂时归入了浮点数类
+			//fix me, scientific notation should have a token type
 			crtString += crtChar;
 			srcCode >> crtChar;
 
@@ -256,7 +266,10 @@ token Tokenizer::findNextToken(void)
 	//delimiter
 	case OTHER_TYPE:
 		crtString += crtChar;
-		srcCode >> crtChar;
+		if (!(srcCode >> crtChar))
+		{
+			crtChar = ' ';
+		}
 
 		//if next character is also OTHER_TYPE
 		if (judgeCType(crtChar) == OTHER_TYPE)
@@ -338,6 +351,9 @@ void Tokenizer::findAllToken()
 			cout << endl;
 		}
 	}
+	nextToken.tokenValue = 100;
+	nextToken.tokenWord = "#";
+	tokenSet.push_back(nextToken);
 }
 
 void Tokenizer::outputList(vector<string> list)
