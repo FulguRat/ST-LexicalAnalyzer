@@ -230,6 +230,7 @@ token Tokenizer::findNextToken(void)
 
 	//character
 	case F_QUOTE_TYPE:
+		crtString += crtChar;
 		srcCode >> crtChar;
 		crtString += crtChar;
 
@@ -239,6 +240,7 @@ token Tokenizer::findNextToken(void)
 			cout << "Error in position 1" << endl;
 			_err_report;
 		}
+		crtString += crtChar;
 
 		srcCode >> crtChar;
 		crtToken.tokenType = CHAR_TYPE;
@@ -247,6 +249,7 @@ token Tokenizer::findNextToken(void)
 
 	//string
 	case D_QUOTE_TYPE:
+		crtString += crtChar;
 		srcCode >> crtChar;
 
 		while (judgeCType(crtChar) != D_QUOTE_TYPE)
@@ -258,6 +261,7 @@ token Tokenizer::findNextToken(void)
 				_err_report;
 			}
 		}
+		crtString += crtChar;
 		srcCode >> crtChar;
 		crtToken.tokenType = STRING_TYPE;
 		crtToken.tokenValue = 2;
