@@ -156,6 +156,7 @@ token Tokenizer::findNextToken(void)
 		if (crtToken.tokenType != KEYWD_TYPE)
 		{
 			crtToken.tokenType = IDENT_TYPE;
+			pushBackNoRepeat(identifierSet, crtString);
 			crtToken.tokenValue = 0;
 		}
 

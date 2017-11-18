@@ -76,9 +76,10 @@ public:
 	//find next token
 	token findNextToken(void);
 
-	//output keyword list, delimiter list or const list
+	//output keyword list, delimiter list, identifier list or const list
 	vector<string> keywdSet;
 	vector<string> delimitSet;
+	vector<string> identifierSet;
 	vector<string> constSet;
 	void outputList(vector<string> list);
 
