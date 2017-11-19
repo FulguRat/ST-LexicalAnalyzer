@@ -41,7 +41,7 @@ const string keywdList[SIZE_OF_KEYWD_LIST] =
 							"signed"/*11*/, "unsigned"/*12*/, "if"/*13*/, "else"/*14*/, "while"/*15*/, "do"/*16*/, "for"/*17*/, 
 							"switch"/*18*/, "case"/*19*/, "default"/*20*/, "break"/*21*/, "continue"/*22*/, "struct"/*23*/, 
 							"union"/*24*/, "enum"/*25*/, "typedef"/*26*/, "static"/*27*/, "extern"/*28*/, "include"/*29*/, 
-							"return"/*30*/, "main"/*31*/ };
+							"return"/*30*/, "const"/*31*/ };
 
 #define SIZE_OF_DELIMIT_LIST 37
 const string delimitList[SIZE_OF_DELIMIT_LIST] = 

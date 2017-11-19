@@ -8,7 +8,8 @@ int main(void)
        d = c;
     }
     char ch[10] = "ok";
-    char x, y = 'a';
+    char x, y = '\\';
+'\a' '\''
     c = a + d;
     c += a; 
 }

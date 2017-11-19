@@ -99,13 +99,15 @@ token Tokenizer::findNextToken(void)
 					}
 				} while (crtChar != '\n');
 			}
-			// "/* ... */"
+			// "/*...*/"
 			else if (crtChar == '*')
 			{
 				while (true)
 				{
 					if (!(srcCode >> crtChar))
 					{
+						crtToken.tokenType = ERROR_TYPE;
+						cout << "/*...*/ annotation have only one half. (¡£©n¡£)" << endl;
 						return crtToken;
 					}
 
@@ -232,6 +234,18 @@ token Tokenizer::findNextToken(void)
 	case F_QUOTE_TYPE:
 		crtString += crtChar;
 		srcCode >> crtChar;
+		if (crtChar == '\\')
+		{
+			crtString += crtChar;
+			srcCode >> crtChar;
+			if (crtChar != 'a' && crtChar != 'b' && crtChar != 'f' && crtChar != 'n' && crtChar != 'r' &&
+				crtChar != 't' && crtChar != 'v' && crtChar != '\\' && crtChar != '\'' && crtChar != '\"' &&
+				crtChar != '?' && crtChar != '0')
+			{
+				cout << "Error in position 6" << endl;
+				_err_report;
+			}
+		}
 		crtString += crtChar;
 
 		srcCode >> crtChar;
