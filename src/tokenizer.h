@@ -14,7 +14,7 @@ using namespace std;
 
 #define LETTER_TYPE   1
 #define NUMBER_TYPE   2
-#define F_QUOTE_TYPE  3
+#define S_QUOTE_TYPE  3
 #define D_QUOTE_TYPE  4
 #define UDLINE_TYPE   5
 #define BLANK_TYPE    6

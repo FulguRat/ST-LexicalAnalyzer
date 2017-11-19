@@ -37,7 +37,7 @@ CType Tokenizer::judgeCType(const char tmpChar)
 
 	//is forward quote?
 	else if (tmpChar == '\'')
-		return F_QUOTE_TYPE;
+		return S_QUOTE_TYPE;
 
 	//is double quote?
 	else if (tmpChar == '\"')
@@ -58,7 +58,7 @@ token Tokenizer::findNextToken(void)
 #define _err_report do \
 					{ \
 						crtToken.tokenType = ERROR_TYPE; \
-						cout << setiosflags(ios::left) << setw(9) << crtString << \
+						cout << setiosflags(ios::left) << setw(7) << crtString << \
 								"Error token type (£þ¡¢£þ)" << endl; \
 						return crtToken; \
 					} while (0) \
@@ -106,9 +106,8 @@ token Tokenizer::findNextToken(void)
 				{
 					if (!(srcCode >> crtChar))
 					{
-						crtToken.tokenType = ERROR_TYPE;
 						cout << "/*...*/ annotation have only one half. (¡£©n¡£)" << endl;
-						return crtToken;
+						_err_report;
 					}
 
 					if (crtChar == '*')
@@ -231,9 +230,14 @@ token Tokenizer::findNextToken(void)
 		break;
 
 	//character
-	case F_QUOTE_TYPE:
+	case S_QUOTE_TYPE:
 		crtString += crtChar;
 		srcCode >> crtChar;
+		if (judgeCType(crtChar) != S_QUOTE_TYPE || judgeCType(crtChar) != D_QUOTE_TYPE)
+		{
+			cout << "\\ is needed in escape character: " << endl;
+			_err_report;
+		}
 		if (crtChar == '\\')
 		{
 			crtString += crtChar;
@@ -242,16 +246,16 @@ token Tokenizer::findNextToken(void)
 				crtChar != 't' && crtChar != 'v' && crtChar != '\\' && crtChar != '\'' && crtChar != '\"' &&
 				crtChar != '?' && crtChar != '0')
 			{
-				cout << "Error in position 6" << endl;
+				cout << "Escape character is not available: " << endl;
 				_err_report;
 			}
 		}
 		crtString += crtChar;
 
 		srcCode >> crtChar;
-		if (judgeCType(crtChar) != F_QUOTE_TYPE)
+		if (judgeCType(crtChar) != S_QUOTE_TYPE)
 		{
-			cout << "Error in position 1" << endl;
+			cout << "Single quotes only have one half in character: " << endl;
 			_err_report;
 		}
 		crtString += crtChar;
@@ -271,7 +275,7 @@ token Tokenizer::findNextToken(void)
 			crtString += crtChar;
 			if (!(srcCode >> crtChar))
 			{
-				cout << "Error in position 5" << endl;
+				cout << "Double quotes only have one half in string: " << endl;
 				_err_report;
 			}
 		}
@@ -327,14 +331,15 @@ token Tokenizer::findNextToken(void)
 		}
 		if (crtToken.tokenType != DELIMIT_TYPE)
 		{
-			cout << "Error in position 2" << endl;
+			cout << "Undefined delimiter: " << endl;
 			_err_report;
 		}
 		break;
 
 	default:
-		cout << "Error in position 3" << endl;
+		cout << "Token can not be recognized: " << endl;
 		_err_report;
+		break;
 	}
 
 	if (crtToken.tokenType != NONE_TYPE)
@@ -345,7 +350,7 @@ token Tokenizer::findNextToken(void)
 	}
 	else
 	{
-		cout << "Error in position 4" << endl;
+		cout << "Token type is NONE_TYPE: " << endl;
 		_err_report;
 	}
 
