@@ -233,7 +233,7 @@ token Tokenizer::findNextToken(void)
 	case S_QUOTE_TYPE:
 		crtString += crtChar;
 		srcCode >> crtChar;
-		if (judgeCType(crtChar) != S_QUOTE_TYPE || judgeCType(crtChar) != D_QUOTE_TYPE)
+		if (judgeCType(crtChar) == S_QUOTE_TYPE || judgeCType(crtChar) == D_QUOTE_TYPE)
 		{
 			cout << "\\ is needed in escape character: " << endl;
 			_err_report;
