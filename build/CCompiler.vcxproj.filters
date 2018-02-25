@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Code\Simplified-CCompiler\src\main.cpp">
+    <ClCompile Include="C:\ST42Data\Code\Simplified-CCompiler\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Code\Simplified-CCompiler\src\tokenizer.cpp">
+    <ClCompile Include="C:\ST42Data\Code\Simplified-CCompiler\src\tokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Code\Simplified-CCompiler\src\tokenizer.h">
+    <ClInclude Include="C:\ST42Data\Code\Simplified-CCompiler\src\tokenizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Code\Simplified-CCompiler\CMakeLists.txt" />
+    <CustomBuild Include="C:\ST42Data\Code\Simplified-CCompiler\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{D8422287-FBF4-3C95-900D-B3F5BB9B649E}</UniqueIdentifier>
+      <UniqueIdentifier>{6696EF40-273E-319E-B790-C38233FD8B7C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{F451E5BE-9FD9-3139-A06A-9081AACDDE19}</UniqueIdentifier>
+      <UniqueIdentifier>{1CD815CB-3981-395B-8D5E-791E62C31BCA}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
